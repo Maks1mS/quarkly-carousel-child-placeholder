@@ -1,4 +1,3 @@
-/* eslint-disable */
 // src/Carousel/Container.js
 import React6, { useEffect as useEffect2, useMemo as useMemo3 } from "react";
 import { Provider } from "react-redux";
@@ -805,7 +804,7 @@ var Point = ({
 var Point_default = Point; // src/Carousel/components/Slide.js
 
 import React4, { useCallback, useMemo } from "react";
-import { Box as Box3, Link, Placeholder } from "@quarkly/widgets";
+import { Box as Box3, Link, Placeholder, useConstructorMode } from "@quarkly/widgets";
 var slidesWrapperList = {
 	box: Box3,
 	link: Link
@@ -820,10 +819,10 @@ var Slide = ({
 	ChildPlaceholder
 }) => {
 	const SlideWrapper = useMemo(() => slidesWrapperList[slidesWrapper], [slidesWrapper]);
+	const mode = useConstructorMode();
 	const hideSlide = index === 0 || index === slides + 1;
 	const clearOverride = useMemo(() => hideSlide && {
-		"data-qoverride": void 0,
-		"data-child-placeholder": void 0
+		"data-qoverride": void 0
 	}, [hideSlide]);
 	const getOverride = useCallback(name => ({ ...override(name, `${name} ${numb}`),
 		...clearOverride
@@ -832,7 +831,7 @@ var Slide = ({
 		    
 		{isEmptyChildren(override(`Slide ${numb}`).children) && <Placeholder message="Drop content here" width="100%" box-sizing="border-box" />}
 		    
-		{!hideSlide && <ChildPlaceholder slot={`Slide ${numb}`} />}
+		{!(hideSlide && mode === "constructor") && <ChildPlaceholder slot={`Slide ${numb}`} />}
 		  
 	</SlideWrapper>;
 };
